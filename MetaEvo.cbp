@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="MetaEvo" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/MetaEvo" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/MetaEvo" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="CVRP_files/A-n32-k5.vrp" />
+		<Unit filename="CVRP_files/A-n37-k6.vrp" />
+		<Unit filename="CVRP_files/A-n39-k5.vrp" />
+		<Unit filename="CVRP_files/A-n45-k6.vrp" />
+		<Unit filename="CVRP_files/A-n48-k7.vrp" />
+		<Unit filename="CVRP_files/A-n54-k7.vrp" />
+		<Unit filename="CVRP_files/A-n60-k9.vrp" />
+		<Unit filename="CVRP_files/CVRP_Problem_Table.png" />
+		<Unit filename="CVRP_files/toy.vrp" />
+		<Unit filename="include/CVRProblem.h" />
+		<Unit filename="include/CrossOps.h" />
+		<Unit filename="include/EvoAlgorithm.h" />
+		<Unit filename="include/GreadySolution.h" />
+		<Unit filename="include/MutationOps.h" />
+		<Unit filename="include/Population.h" />
+		<Unit filename="include/SelectionOps.h" />
+		<Unit filename="include/Solution.h" />
+		<Unit filename="include/SolutionsLogger.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/CVRProblem.cpp" />
+		<Unit filename="src/CrossOps.cpp" />
+		<Unit filename="src/EvoAlgorithm.cpp" />
+		<Unit filename="src/GreadySolution.cpp" />
+		<Unit filename="src/MutationOps.cpp" />
+		<Unit filename="src/Population.cpp" />
+		<Unit filename="src/SelectionOps.cpp" />
+		<Unit filename="src/Solution.cpp" />
+		<Unit filename="src/SolutionsLogger.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

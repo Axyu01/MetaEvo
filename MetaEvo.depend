@@ -1,0 +1,100 @@
+# depslib dependency file v1.0
+1760995864 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
+	<iostream>
+	<CVRProblem.h>
+	<GreadySolution.h>
+	<Solution.h>
+	<cstdlib>
+	<time.h>
+	<EvoAlgorithm.h>
+	<Population.h>
+	<CrossOps.h>
+	<MutationOps.h>
+	<SolutionsLogger.h>
+	<vector>
+
+1760994734 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\cvrproblem.cpp
+	"CVRProblem.h"
+	"Solution.h"
+	<iostream>
+	<cstdlib>
+	<fstream>
+	<sstream>
+	<string>
+	<vector>
+	<math.h>
+	<algorithm>
+	<limits>
+
+1760188787 c:\users\adrian\documents\codeblocks projects\metaevo\include\cvrproblem.h
+	<string>
+	<Solution.h>
+
+1760434375 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\crossops.cpp
+	"CrossOps.h"
+	"CrossOps.h"
+	<algorithm>
+	<cstdlib>
+	<vector>
+
+1760433834 c:\users\adrian\documents\codeblocks projects\metaevo\include\crossops.h
+	<Solution.h>
+
+1760191687 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\evoalgorithm.cpp
+	"EvoAlgorithm.h"
+	"iostream"
+
+1760189668 c:\users\adrian\documents\codeblocks projects\metaevo\include\evoalgorithm.h
+	<Population.h>
+
+1760343327 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\mutationops.cpp
+	"MutationOps.h"
+	<cstdlib>
+	<iostream>
+
+1760342309 c:\users\adrian\documents\codeblocks projects\metaevo\include\mutationops.h
+	<Solution.h>
+
+1759946603 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\selectionops.cpp
+	"SelectionOps.h"
+
+1759946603 c:\users\adrian\documents\codeblocks projects\metaevo\include\selectionops.h
+
+1760344208 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\population.cpp
+	"Population.h"
+	"cstdlib"
+	<algorithm>
+	<iostream>
+
+1760433952 c:\users\adrian\documents\codeblocks projects\metaevo\include\population.h
+	<Solution.h>
+	<vector>
+
+1760358053 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\greadysolution.cpp
+	"GreadySolution.h"
+	<CVRProblem.h>
+	<iostream>
+
+1760357630 c:\users\adrian\documents\codeblocks projects\metaevo\include\greadysolution.h
+	<CVRProblem.h>
+	<Solution.h>
+
+1760345491 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\solution.cpp
+	"Solution.h"
+	"cstdlib"
+	"iostream"
+
+1760358008 c:\users\adrian\documents\codeblocks projects\metaevo\include\solution.h
+	<string>
+
+1760348635 c:\users\adrian\documents\codeblocks projects\metaevo\include\solutionslogger.h
+	<fstream>
+	<string>
+	<Solution.h>
+	<vector>
+
+1760356243 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\solutionslogger.cpp
+	"SolutionsLogger.h"
+	"Solution.h"
+	<iostream>
+
