@@ -21,7 +21,7 @@ void Population::Init()
         Solutions.reserve(Params.init_population_size*2);
 
     Solutions.clear();
-    for(int i=0;i<Params.init_population_size;i++)
+    for(int i=0; i<Params.init_population_size; i++)
     {
         Solution* s = Params.randSolutionCreator();
         Solutions.push_back(s);
@@ -38,21 +38,67 @@ void Population::Sort()
 {
     // Sort ascending by Value (smallest first)
     std::sort(Solutions.begin(), Solutions.end(),
-              [](const Solution* a, const Solution* b) {
-                  return a->Value < b->Value;
-              });
+              [](const Solution* a, const Solution* b)
+    {
+        return a->Value < b->Value;
+    });
 }
 void Population::Select()
 {
+    bool useRulate = false;
+
     int desiredPop = Params.selection_population_size;
     int popSize = Solutions.size();
 
     if (popSize <= desiredPop)
         return;
+    if(useRulate == false)
+    {
+        Sort();
+    }
+    else
+    {
+        //Rulate
+        double maxEstim = 0;
 
-    Sort();
+        for(int i=0; i<popSize; i++)
+        {
+            maxEstim += Solutions[i]->Value;
+        }
+        double randomEstim;
+
+        for(int i=0; i<popSize-desiredPop; i++)
+        {
+            double maxPercentage = static_cast<double>(rand()) / RAND_MAX;
+            double eliminationValue = maxPercentage * maxEstim;
+            double currentValueSum = 0;
+            int eliminatedSolution = 0;
+
+            double sValue =0;
+            for(int s=0; s<popSize-desiredPop; s++)
+            {
+                sValue = Solutions[s]->Value;
+                //Check if solution is chosen to eliminate
+                if(currentValueSum<= eliminationValue && eliminationValue <=currentValueSum+sValue)
+                {
+                    eliminatedSolution = s;
+                    break;
+                }
+            }
+            //Swap with last to allow elimination at the end
+            int lastSolution = popSize-i-1;
+            Solution* temp = Solutions[lastSolution];
+            Solutions[lastSolution] = Solutions[eliminatedSolution];
+            Solutions[eliminatedSolution] = temp;
+
+            //Update maxEstim to narrow the elimination field
+            maxEstim -= sValue;
+        }
+    }
+
+
     // Remove the excess elements at the end
-    for(int i = desiredPop;i<Solutions.size();i++)
+    for(int i = desiredPop; i<Solutions.size(); i++)
     {
         delete Solutions[i];
     }

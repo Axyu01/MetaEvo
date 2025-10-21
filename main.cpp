@@ -10,14 +10,15 @@
 #include <MutationOps.h>
 #include <SolutionsLogger.h>
 #include <vector>
+#include <Tests.h>
 
 using namespace std;
 CVRProblem* problem;
 Solution* randSol()
 {
     int dim = problem->GetDimension();
-    //Solution* s = new Solution(dim-1);
-    Solution* s = new Solution((dim-1)*2-1);
+    Solution* s = new Solution(dim-1);
+    //Solution* s = new Solution((dim-1)*2-1);
     s->RandomizeCVRP(dim);
     return s;
 }
@@ -59,7 +60,7 @@ int main()
     EvoAlgorithm* alg = new EvoAlgorithm(params);
     Population* population = alg->_population;
     alg->Start();
-    for(int i=0;i<1000;i++)
+    for(int i=0;i<100;i++)
     {
         alg->Loop();
     }
@@ -68,6 +69,9 @@ int main()
 
     SolutionsLogger* logger = new SolutionsLogger("test.csv");
     logger->Log(population->Solutions,"end population");
+
+    Tests::TestRandom();
+    Tests::TestGready();
     delete logger;
 
     return 0;

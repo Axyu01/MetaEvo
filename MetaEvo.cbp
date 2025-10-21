@@ -52,6 +52,7 @@
 		<Unit filename="include/SelectionOps.h" />
 		<Unit filename="include/Solution.h" />
 		<Unit filename="include/SolutionsLogger.h" />
+		<Unit filename="include/Tests.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/CVRProblem.cpp" />
 		<Unit filename="src/CrossOps.cpp" />
@@ -62,6 +63,7 @@
 		<Unit filename="src/SelectionOps.cpp" />
 		<Unit filename="src/Solution.cpp" />
 		<Unit filename="src/SolutionsLogger.cpp" />
+		<Unit filename="src/Tests.cpp" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

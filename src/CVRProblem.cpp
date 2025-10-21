@@ -114,9 +114,9 @@ CVRProblem::CVRProblem(int numOfLocations)
 }
 CVRProblem::CVRProblem(std::string path)
 {
-    cout << "CVRProblem::Constructor::PreLoaded"<< endl;
+    //cout << "CVRProblem::Constructor::PreLoaded"<< endl;
     LoadFromFile(path);
-    cout << "CVRProblem::Constructor::PostLoaded"<< endl;
+    //cout << "CVRProblem::Constructor::PostLoaded"<< endl;
 }
 CVRProblem::~CVRProblem()
 {
@@ -140,7 +140,7 @@ void CVRProblem::Print()
 }
 bool CVRProblem::LoadFromFile(std::string path)
 {
-    cout << "Loading File..."<< endl;
+    cout << "Loading File: "<< path<< endl;
     ifstream file(path);
     if (!file.is_open())
     {
@@ -160,7 +160,7 @@ bool CVRProblem::LoadFromFile(std::string path)
             string dummy;
             stringstream ss(line);
             ss >> dummy >> dummy >> _dimension;
-            cout << "Read Dimension"<< _dimension<< endl;
+            //cout << "Read Dimension"<< _dimension<< endl;
             initLocations(_dimension);
         }
         if (line.find("CAPACITY") != string::npos)
@@ -168,11 +168,11 @@ bool CVRProblem::LoadFromFile(std::string path)
             string dummy;
             stringstream ss(line);
             ss >> dummy >> dummy >> _capacity;
-            cout << "Read Capacity: " << _capacity << endl;
+            //cout << "Read Capacity: " << _capacity << endl;
         }
         else if (line.find("NODE_COORD_SECTION") != string::npos)
         {
-            cout << "Readings Nodes/Cords..."<< endl;
+            //cout << "Readings Nodes/Cords..."<< endl;
             nodeIterator = 0;
             inLocationSection = true;
             inDemandSection = false;
@@ -180,7 +180,7 @@ bool CVRProblem::LoadFromFile(std::string path)
         }
         else if (line.find("DEMAND_SECTION") != string::npos)
         {
-            cout << "Readings Nodes Demands..."<< endl;
+            //cout << "Readings Nodes Demands..."<< endl;
             nodeIterator = 0;
             inLocationSection = false;
             inDemandSection = true;
@@ -188,13 +188,13 @@ bool CVRProblem::LoadFromFile(std::string path)
         }
         else if (line.find("DEPOT_SECTION") != string::npos)
         {
-            cout << "Leaving..."<< endl;
+            //cout << "Leaving..."<< endl;
             break;
         }
 
         if (inLocationSection)
         {
-            cout << "Reading location["<< nodeIterator+1<<"]"<< endl;
+            //cout << "Reading location["<< nodeIterator+1<<"]"<< endl;
             stringstream ss(line);
             Location* location = &_LocationArray[nodeIterator++];
             ss >> location->id >> location->x >> location->y;
@@ -206,7 +206,7 @@ bool CVRProblem::LoadFromFile(std::string path)
             stringstream ss(line);
             int id, demand;
             ss >> id >> demand;
-            cout << "Reading demand for ["<< id <<"]"<< endl;
+            //cout << "Reading demand for ["<< id <<"]"<< endl;
             if (id - 1 < _dimension)
                 _LocationArray[id-1].demand = demand;
         }

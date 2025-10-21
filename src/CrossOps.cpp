@@ -179,36 +179,47 @@ Solution* CrossOps::CycleCrossover(Solution& s1, Solution& s2)
     delete[] child;
     return offspring;
 }
-// ========== PARTIALLY MAPPED CROSSOVER (PMX) ==========
 Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
 {
     int size = s1.Size;
     if (size != s2.Size)
         return new Solution(s1);
 
-    int* parent1 = s1.Representation;
-    int* parent2 = s2.Representation;
-    int* child = new int[size];
-    for (int i = 0; i < size; i++)
-        child[i] = -1;
+    int* parent1 = new int[size];
+    int* parent2 = new int[size];
+    int* child   = new int[size];
 
+    // === 1️⃣  Zamiana zer na unikalne wartości (osobno dla każdego rodzica) ===
+    int zeroId1 = -1;
+    int zeroId2 = -1;
+
+    for (int i = 0; i < size; i++)
+    {
+        if (s1.Representation[i] == 0) parent1[i] = zeroId1--;
+        else parent1[i] = s1.Representation[i];
+
+        if (s2.Representation[i] == 0) parent2[i] = zeroId2--;
+        else parent2[i] = s2.Representation[i];
+
+        child[i] = -1; // puste miejsce w dziecku
+    }
+
+    // === 2️⃣  Losowanie punktów krzyżowania ===
     int start = rand() % size;
     int end = rand() % size;
     if (start > end) std::swap(start, end);
 
-    // Copy segment from parent1
+    // === 3️⃣  Kopiowanie segmentu z parent1 do dziecka ===
     for (int i = start; i <= end; i++)
         child[i] = parent1[i];
 
-    // Mapping step (PMX logic)
+    // === 4️⃣  Tworzenie mapowania i rozwiązywanie konfliktów ===
     for (int i = start; i <= end; i++)
     {
         int val1 = parent1[i];
         int val2 = parent2[i];
 
-        if (val2 == 0) continue; // zero can duplicate freely
-
-        // if val2 already in child, skip
+        // jeśli val2 już istnieje w dziecku — pomiń
         bool exists = false;
         for (int j = 0; j < size; j++)
         {
@@ -225,6 +236,8 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
         {
             int conflictVal = parent2[pos];
             pos = -1;
+
+            // znajdź konfliktową wartość w parent1
             for (int j = 0; j < size; j++)
             {
                 if (parent1[j] == conflictVal)
@@ -234,6 +247,7 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
                 }
             }
 
+            // jeśli miejsce puste, wpisz i zakończ
             if (pos == -1 || child[pos] == -1)
             {
                 child[pos] = val2;
@@ -242,7 +256,7 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
         }
     }
 
-    // Fill remaining empty positions from parent2, allowing zeros
+    // === 5️⃣  Uzupełnij brakujące pozycje z parent2 ===
     for (int i = 0; i < size; i++)
     {
         if (child[i] == -1)
@@ -250,13 +264,18 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
             for (int j = 0; j < size; j++)
             {
                 int gene = parent2[j];
-                if (gene != 0)
+
+                // sprawdź, czy już istnieje
+                bool exists = false;
+                for (int k = 0; k < size; k++)
                 {
-                    bool exists = false;
-                    for (int k = 0; k < size; k++)
-                        if (child[k] == gene) { exists = true; break; }
-                    if (exists) continue;
+                    if (child[k] == gene)
+                    {
+                        exists = true;
+                        break;
+                    }
                 }
+                if (exists) continue;
 
                 child[i] = gene;
                 break;
@@ -264,11 +283,22 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
         }
     }
 
-    // Return offspring
+    // === 6️⃣  Przywróć zera (ujemne → 0) ===
+    for (int i = 0; i < size; i++)
+    {
+        if (child[i] < 0)
+            child[i] = 0;
+    }
+
+    // === 7️⃣  Utwórz rozwiązanie i posprzątaj pamięć ===
     Solution* offspring = new Solution(size);
     for (int i = 0; i < size; i++)
         offspring->Representation[i] = child[i];
 
+    delete[] parent1;
+    delete[] parent2;
     delete[] child;
+
     return offspring;
 }
+

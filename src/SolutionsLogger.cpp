@@ -35,3 +35,9 @@ void SolutionsLogger::Log(std::vector<Solution*> solutions, const std::string& n
         _file << ";\n";
     }
 }
+void SolutionsLogger::Log(const std::string& line)
+{
+    if (!_file.is_open()) return;
+
+    _file << line << ";\n";
+}
