@@ -9,7 +9,7 @@ SolutionsLogger::SolutionsLogger(const std::string& path)
         std::cerr << "Error: Could not open file " << path << " for writing.\n";
     } else {
         // CSV header
-        _file << "Note;Value;Genome;\n";
+        _file << "Value;Genome;Note;\n";
     }
 }
 
@@ -25,14 +25,14 @@ void SolutionsLogger::Log(std::vector<Solution*> solutions, const std::string& n
 
     for (Solution* s : solutions)
     {
-        _file << note << ";"<<s->Value<<";<";
+        _file <<s->Value<<";<";
         for (int i = 0; i < s->Size-1; i++)
         {
             int city = s->Representation[i];
             _file << city << "-";
         }
-        _file << s->Representation[s->Size-1] << ">";
-        _file << ";\n";
+        _file << s->Representation[s->Size-1] << ">;";
+        _file << note <<";\n";
     }
 }
 void SolutionsLogger::Log(const std::string& line)

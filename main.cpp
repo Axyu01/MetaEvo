@@ -72,6 +72,8 @@ int main()
 
     Tests::TestRandom();
     Tests::TestGready();
+    Tests::TestEvo();
+    delete alg;
     delete logger;
 
     return 0;

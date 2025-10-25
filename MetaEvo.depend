@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1761014973 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
+1761398834 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
 	<iostream>
 	<CVRProblem.h>
 	<GreadySolution.h>
@@ -31,7 +31,7 @@
 	<string>
 	<Solution.h>
 
-1761004997 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\crossops.cpp
+1761017777 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\crossops.cpp
 	"CrossOps.h"
 	"CrossOps.h"
 	<algorithm>
@@ -94,12 +94,12 @@
 	<Solution.h>
 	<vector>
 
-1761016392 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\solutionslogger.cpp
+1761407945 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\solutionslogger.cpp
 	"SolutionsLogger.h"
 	"Solution.h"
 	<iostream>
 
-1761016785 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\tests.cpp
+1761400950 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\tests.cpp
 	"Tests.h"
 	"CVRProblem.h"
 	"SolutionsLogger.h"
@@ -107,8 +107,13 @@
 	"iostream"
 	"GreadySolution.h"
 	<string>
+	"EvoAlgorithm.h"
+	"CrossOps.h"
+	"MutationOps.h"
+	"vector"
 
-1761014767 c:\users\adrian\documents\codeblocks projects\metaevo\include\tests.h
+1761141548 c:\users\adrian\documents\codeblocks projects\metaevo\include\tests.h
 	<string>
 	"CVRProblem.h"
+	<Population.h>
 
