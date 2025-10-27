@@ -199,22 +199,23 @@ void Tests::TestEvo()
 void Tests::TestEvo(CVRProblem& problem, std::string dir, PopParameters popParams, int iterations)
 {
     std::cout << "Evolutionary test for: " << dir << std::endl;
-    SolutionsLogger logger(dir + ".csv");
-    std::vector<Solution*> forLogger;
-    forLogger.push_back(nullptr);
 
     // ✅ Ensure the static problem pointer is set correctly
     _problem = &problem;
 
-    EvoAlgorithm evo(popParams);
-    evo.Start();
-
-    for (int i = 0; i < iterations; i++)
+    for(int trial = 0;trial<10;trial++)
     {
-        evo.Loop();
-        logger.Log(evo._population->Solutions,std::to_string(i));
-    }
+        SolutionsLogger logger(dir + "_trial_" + std::to_string(trial+1)+".csv");
+        EvoAlgorithm evo(popParams);
+        evo.Start();
 
-    evo._population->Sort();
-    evo._population->Solutions[0]->Print("Best Evolutionary Solution");
+        for (int i = 0; i < iterations; i++)
+        {
+            evo.Loop();
+            logger.Log(evo._population->Solutions,std::to_string(i));
+        }
+
+        evo._population->Sort();
+        evo._population->Solutions[0]->Print("Best Evolutionary Solution");
+    }
 }
