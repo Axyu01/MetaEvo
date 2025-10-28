@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1761395234 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
+1761578631 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
 	<iostream>
 	<CVRProblem.h>
 	<GreadySolution.h>
@@ -99,7 +99,7 @@
 	"Solution.h"
 	<iostream>
 
-1761574771 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\tests.cpp
+1761579424 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\tests.cpp
 	"Tests.h"
 	"CVRProblem.h"
 	"SolutionsLogger.h"
@@ -111,9 +111,23 @@
 	"CrossOps.h"
 	"MutationOps.h"
 	"vector"
+	"SAAlgorithm.h"
+	"SAAlgorithm.h"
 
-1761137948 c:\users\adrian\documents\codeblocks projects\metaevo\include\tests.h
+1761579059 c:\users\adrian\documents\codeblocks projects\metaevo\include\tests.h
 	<string>
 	"CVRProblem.h"
 	<Population.h>
+
+1761579482 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\saalgorithm.cpp
+	"SAAlgorithm.h"
+	<cmath>
+	<iostream>
+	<algorithm>
+
+1761578268 c:\users\adrian\documents\codeblocks projects\metaevo\include\saalgorithm.h
+	"Solution.h"
+	"CVRProblem.h"
+	<random>
+	<string>
 

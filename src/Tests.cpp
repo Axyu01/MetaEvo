@@ -9,6 +9,7 @@
 #include "CrossOps.h"
 #include "MutationOps.h"
 #include "vector"
+#include "SAAlgorithm.h"
 
 // =====================================================
 // Definition of static member (required for linking)
@@ -219,3 +220,22 @@ void Tests::TestEvo(CVRProblem& problem, std::string dir, PopParameters popParam
         evo._population->Solutions[0]->Print("Best Evolutionary Solution");
     }
 }
+#include "SAAlgorithm.h"
+
+void Tests::TestSA()
+{
+    CVRProblem problem("CVRP_files/A-n32-k5.vrp");
+    SAAlgorithm sa(problem);
+
+    sa.startTemp = 1000.0;
+    sa.minTemp = 0.001;
+    sa.alpha = 0.95;
+    sa.iterationsPerTemp = 1000000;
+    sa.maxNoImprove = 50000000;
+
+    sa.Init();
+    sa.Iterate();
+
+    sa.bestSolution->Print("Best SA");
+}
+

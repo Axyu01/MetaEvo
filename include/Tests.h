@@ -4,7 +4,6 @@
 #include "CVRProblem.h"
 #include <Population.h>
 
-
 class Tests
 {
     public:
@@ -16,6 +15,7 @@ class Tests
         static void TestGready(CVRProblem& problem,std::string dir);
         static void TestEvo();
         static void TestEvo(CVRProblem& problem,std::string dir,PopParameters popParams,int iterations);
+        static void TestSA();
         static CVRProblem* _problem;
 
     protected:

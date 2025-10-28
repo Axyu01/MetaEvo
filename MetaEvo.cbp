@@ -49,6 +49,7 @@
 		<Unit filename="include/GreadySolution.h" />
 		<Unit filename="include/MutationOps.h" />
 		<Unit filename="include/Population.h" />
+		<Unit filename="include/SAAlgorithm.h" />
 		<Unit filename="include/SelectionOps.h" />
 		<Unit filename="include/Solution.h" />
 		<Unit filename="include/SolutionsLogger.h" />
@@ -60,6 +61,7 @@
 		<Unit filename="src/GreadySolution.cpp" />
 		<Unit filename="src/MutationOps.cpp" />
 		<Unit filename="src/Population.cpp" />
+		<Unit filename="src/SAAlgorithm.cpp" />
 		<Unit filename="src/SelectionOps.cpp" />
 		<Unit filename="src/Solution.cpp" />
 		<Unit filename="src/SolutionsLogger.cpp" />

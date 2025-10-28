@@ -44,7 +44,7 @@ int main()
 
     GreadySolution* greadySolution = new GreadySolution(*problem);
     greadySolution->Print("Gready Solution");
-
+    /*
     PopParameters params;
     params.crossOperator = CrossOps::CycleCrossover;
     params.mutationOperator = MutationOps::Inverse;
@@ -53,9 +53,6 @@ int main()
     params.init_population_size = 2000;
     params.selection_population_size = 500;
     params.randSolutionCreator = randSol;
-    /* [problem]()->Solution*{
-
-    }*/
     params.evaluator = estimate;
     EvoAlgorithm* alg = new EvoAlgorithm(params);
     Population* population = alg->_population;
@@ -67,14 +64,17 @@ int main()
     population->Sort();
     population->Solutions[0]->Print("Best Evo");
 
+
     SolutionsLogger* logger = new SolutionsLogger("test.csv");
     logger->Log(population->Solutions,"end population");
-
-    Tests::TestRandom();
-    Tests::TestGready();
-    Tests::TestEvo();
     delete alg;
     delete logger;
+    */
+    Tests::TestSA();
+    //Tests::TestRandom();
+    //Tests::TestGready();
+    //Tests::TestEvo();
+
 
     return 0;
 }
