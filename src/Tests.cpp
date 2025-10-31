@@ -181,20 +181,24 @@ void Tests::TestEvo()
     PopParameters params;
     params.crossOperator = CrossOps::CycleCrossover;
     params.mutationOperator = MutationOps::Inverse;
-    params.mutation_chance = 0.3;
-    params.crossover_chance = 1.0;
-    params.init_population_size = 500;
-    params.selection_population_size = 100;
+    params.mutation_chance = 0.1;
+    params.crossover_chance = 0.7;
+    params.init_population_size = 1000;
+    params.selection_population_size = 200;
     params.randSolutionCreator = _randSol;
     params.evaluator = _estimate;
 
-    TestEvo(problem1, "out/CVRP_files/evo/A-n32-k5", params, 100);
-    TestEvo(problem2, "out/CVRP_files/evo/A-n37-k6", params, 100);
-    TestEvo(problem3, "out/CVRP_files/evo/A-n39-k5", params, 100);
-    TestEvo(problem4, "out/CVRP_files/evo/A-n45-k6", params, 100);
-    TestEvo(problem5, "out/CVRP_files/evo/A-n48-k7", params, 100);
-    TestEvo(problem6, "out/CVRP_files/evo/A-n54-k7", params, 100);
-    TestEvo(problem7, "out/CVRP_files/evo/A-n60-k9", params, 100);
+    const int ITERATIONS = 1500;
+    params.selection_population_size = 200;
+    TestEvo(problem1, "out/CVRP_files/evo/A-n32-k5", params, ITERATIONS);
+    TestEvo(problem2, "out/CVRP_files/evo/A-n37-k6", params, ITERATIONS);
+    TestEvo(problem3, "out/CVRP_files/evo/A-n39-k5", params, ITERATIONS);
+    params.selection_population_size = 300;
+    TestEvo(problem4, "out/CVRP_files/evo/A-n45-k6", params, ITERATIONS);
+    TestEvo(problem5, "out/CVRP_files/evo/A-n48-k7", params, ITERATIONS);
+    params.selection_population_size = 400;
+    TestEvo(problem6, "out/CVRP_files/evo/A-n54-k7", params, ITERATIONS);
+    TestEvo(problem7, "out/CVRP_files/evo/A-n60-k9", params, ITERATIONS);
 }
 
 void Tests::TestEvo(CVRProblem& problem, std::string dir, PopParameters popParams, int iterations)
@@ -220,22 +224,59 @@ void Tests::TestEvo(CVRProblem& problem, std::string dir, PopParameters popParam
         evo._population->Solutions[0]->Print("Best Evolutionary Solution");
     }
 }
+// =====================================================
+// Simulated Annealing tests
+// =====================================================
+
 #include "SAAlgorithm.h"
 
 void Tests::TestSA()
 {
-    CVRProblem problem("CVRP_files/A-n32-k5.vrp");
-    SAAlgorithm sa(problem);
+    CVRProblem problem1("CVRP_files/A-n32-k5.vrp");
+    CVRProblem problem2("CVRP_files/A-n37-k6.vrp");
+    CVRProblem problem3("CVRP_files/A-n39-k5.vrp");
+    CVRProblem problem4("CVRP_files/A-n45-k6.vrp");
+    CVRProblem problem5("CVRP_files/A-n48-k7.vrp");
+    CVRProblem problem6("CVRP_files/A-n54-k7.vrp");
+    CVRProblem problem7("CVRP_files/A-n60-k9.vrp");
 
-    sa.startTemp = 1000.0;
-    sa.minTemp = 0.001;
-    sa.alpha = 0.95;
-    sa.iterationsPerTemp = 1000000;
-    sa.maxNoImprove = 50000000;
+    // parametry SA
+    double startTemp = 1000.0;
+    double minTemp = 0.001;
+    double alpha = 0.95;
+    int iterationsPerTemp = 10000;
+    int maxNoImprove = 50000;
+    int trials = 10;
 
-    sa.Init();
-    sa.Iterate();
-
-    sa.bestSolution->Print("Best SA");
+    TestSA(problem1, "out/CVRP_files/sa/A-n32-k5", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
+    TestSA(problem2, "out/CVRP_files/sa/A-n37-k6", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
+    TestSA(problem3, "out/CVRP_files/sa/A-n39-k5", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
+    TestSA(problem4, "out/CVRP_files/sa/A-n45-k6", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
+    TestSA(problem5, "out/CVRP_files/sa/A-n48-k7", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
+    TestSA(problem6, "out/CVRP_files/sa/A-n54-k7", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
+    TestSA(problem7, "out/CVRP_files/sa/A-n60-k9", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
 }
 
+void Tests::TestSA(CVRProblem& problem, std::string dir,
+                   double startTemp, double minTemp, double alpha,
+                   int iterationsPerTemp, int maxNoImprove, int trials)
+{
+    std::cout << "SA test for: " << dir << std::endl;
+
+    for (int trial = 0; trial < trials; trial++)
+    {
+        std::string path = dir + "_trial_" + std::to_string(trial + 1) + ".csv";
+        SolutionsLogger logger(path);
+
+        SAAlgorithm sa(problem);
+        sa.startTemp = startTemp;
+        sa.minTemp = minTemp;
+        sa.alpha = alpha;
+        sa.iterationsPerTemp = iterationsPerTemp;
+        sa.maxNoImprove = maxNoImprove;
+
+        sa.Init();
+        sa.IterateWithLogging(logger, 100);  // log co 100 iteracji
+        sa.bestSolution->Print("Best SA Solution");
+    }
+}

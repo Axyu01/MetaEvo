@@ -8,8 +8,8 @@ class MutationOps
     public:
         //MutationOps();
         //virtual ~MutationOps();
-        static void Swap(Solution& s);
-        static void Inverse(Solution& s);
+        static void Swap(Solution& s,double mutChance);
+        static void Inverse(Solution& s,double mutChance);
 
     protected:
 

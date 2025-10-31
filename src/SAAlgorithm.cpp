@@ -33,7 +33,7 @@ Solution* SAAlgorithm::Neighbor(Solution* s)
     int n = s->Size;
     Solution* neighbor = new Solution(*s);
 
-    // === prosty operator SWAP dla sąsiedztwa ===
+    // Prosty operator SWAP
     int i = rng() % n;
     int j = rng() % n;
     std::swap(neighbor->Representation[i], neighbor->Representation[j]);
@@ -45,15 +45,16 @@ Solution* SAAlgorithm::Neighbor(Solution* s)
 double SAAlgorithm::AcceptanceProbability(double oldVal, double newVal, double T)
 {
     if (newVal < oldVal)
-        return 1.0; // lepsze rozwiązanie – zawsze akceptujemy
-    return std::exp((oldVal - newVal) / T); // gorsze – z pewnym prawdopodobieństwem
+        return 1.0; // zawsze akceptuj lepsze
+    return std::exp((oldVal - newVal) / T);
 }
 
-void SAAlgorithm::Iterate()
+void SAAlgorithm::IterateWithLogging(SolutionsLogger& logger, int logInterval)
 {
     if (!solution)
         Init();
 
+    std::vector<Solution*> logBuffer(1);
     double T = startTemp;
     int noImprove = 0;
     int iteration = 0;
@@ -67,18 +68,16 @@ void SAAlgorithm::Iterate()
             Solution* candidate = Neighbor(solution);
             double ap = AcceptanceProbability(solution->Value, candidate->Value, T);
 
+            // Akceptacja kandydata
             if (candidate->Value < solution->Value || uniform(rng) < ap)
             {
-                // Akceptujemy nowego sąsiada
-                delete solution;
-                solution = new Solution(*candidate);
+                CopySolution(solution, candidate);
             }
 
-            // Aktualizacja najlepszego rozwiązania
+            // Aktualizacja najlepszego
             if (candidate->Value < bestSolution->Value)
             {
-                delete bestSolution;
-                bestSolution = new Solution(*candidate);
+                CopySolution(bestSolution, candidate);
                 noImprove = 0;
             }
             else
@@ -89,22 +88,21 @@ void SAAlgorithm::Iterate()
             delete candidate;
             iteration++;
 
-            if (iteration % 100000 == 0)
+            // logowanie co n iteracji
+            if (iteration % logInterval == 0)
+            {
+                logBuffer[0] = solution;
+                logger.Log(logBuffer, std::to_string(iteration));
+            }
+
+            if (iteration % 50000 == 0)
                 PrintStatus(T, iteration, bestSolution->Value);
         }
 
-        // Schładzanie
-        T *= alpha;
+        T *= alpha; // schładzanie
     }
 
     std::cout << "[SA] Finished. Best value: " << bestSolution->Value << std::endl;
-}
-
-void SAAlgorithm::LoopUntil(double minTemperature)
-{
-    startTemp = 1000.0;
-    minTemp = minTemperature;
-    Iterate();
 }
 
 void SAAlgorithm::CopySolution(Solution*& dest, const Solution* src)
@@ -116,7 +114,7 @@ void SAAlgorithm::CopySolution(Solution*& dest, const Solution* src)
 
 void SAAlgorithm::PrintStatus(double T, int iter, double bestVal)
 {
-    std::cout << "[SA] Iteration: " << iter
+    std::cout << "[SA] Iter: " << iter
               << " | Temp: " << T
               << " | Best: " << bestVal
               << std::endl;

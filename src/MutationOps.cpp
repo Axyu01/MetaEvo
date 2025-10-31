@@ -2,24 +2,31 @@
 #include <cstdlib>
 #include <iostream>
 
-void MutationOps::Swap(Solution& s)
+void MutationOps::Swap(Solution& s,double mutChance)
 {
     int size = s.Size;
     if(size <2)
         return;
 
     int* representation = s.Representation;
-    int firstPos = rand()%size;
-    int secondPos = firstPos;
-    while(firstPos == secondPos)
+    int repetitions = rand()%((int)(size*mutChance));
+    for(int i=0;i<repetitions;i++)
     {
-        secondPos = rand()%size;
+        int firstPos = rand()%size;
+        int secondPos = firstPos;
+        while(firstPos == secondPos)
+        {
+            secondPos = rand()%size;
+        }
+
+        //swap
+        int temp = representation[firstPos];
+        representation[firstPos] = representation[secondPos];
+        representation[secondPos] = temp;
     }
-    int temp = representation[firstPos];
-    representation[firstPos] = representation[secondPos];
-    representation[secondPos] = temp;
+
 }
-void MutationOps::Inverse(Solution& s)
+void MutationOps::Inverse(Solution& s,double mutChance)
 {
     int size = s.Size;
     if(size <2)

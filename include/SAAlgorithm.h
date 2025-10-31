@@ -3,6 +3,7 @@
 
 #include "Solution.h"
 #include "CVRProblem.h"
+#include "SolutionsLogger.h"
 #include <random>
 #include <string>
 
@@ -31,7 +32,8 @@ public:
 
     // === Główne metody ===
     void Init();                   // inicjalizacja losowego rozwiązania
-    void Iterate();                // jedna pełna iteracja SA (pętla po temperaturach)
+    void Iterate();                // klasyczna iteracja SA (bez logowania)
+    void IterateWithLogging(SolutionsLogger& logger, int logInterval = 1000); // wersja z logowaniem
     void LoopUntil(double minTemperature);  // pętla aż do osiągnięcia T < minTemperature
 
 private:
@@ -39,8 +41,7 @@ private:
     Solution* Neighbor(Solution* s);       // generuje sąsiedztwo (np. swap)
     double AcceptanceProbability(double oldVal, double newVal, double T);
     void CopySolution(Solution*& dest, const Solution* src);
-    void PrintStatus(double T, int iter, double bestVal); // opcjonalny log
-
+    void PrintStatus(double T, int iter, double bestVal); // log w konsoli
 };
 
 #endif // SAALGORITHM_H

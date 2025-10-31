@@ -2,13 +2,14 @@ import os
 import csv
 import re
 import statistics
-import matplotlib.pyplot as plt
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
+# ======= KONFIGURACJA =======
 INPUT_DIR = "out/CVRP_files"
 OUTPUT_DIR = "report_output"
-
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+# =============================
 
 def read_csv(filepath):
     """Wczytuje dane z pliku CSV zapisanych przez SolutionsLogger."""
@@ -28,6 +29,7 @@ def read_csv(filepath):
                     continue
     return values, notes
 
+
 def analyze_file(filepath):
     """Analizuje pojedynczy plik CSV."""
     values, notes = read_csv(filepath)
@@ -37,15 +39,19 @@ def analyze_file(filepath):
     avg_val = statistics.mean(values)
     best_val = min(values)
     worst_val = max(values)
+    std_val = statistics.stdev(values) if len(values) > 1 else 0.0
+
     return {
         "file": filepath,
         "count": len(values),
         "avg": avg_val,
         "best": best_val,
         "worst": worst_val,
+        "std": std_val,
         "values": values,
         "notes": notes
     }
+
 
 def find_csv_files(base_dir):
     """Rekurencyjnie znajduje wszystkie pliki CSV."""
@@ -56,16 +62,6 @@ def find_csv_files(base_dir):
                 csv_files.append(os.path.join(root, f))
     return csv_files
 
-def save_histogram(name, values):
-    """Rysuje histogram rozkładu wartości."""
-    plt.figure()
-    plt.hist(values, bins=30)
-    plt.xlabel("Value")
-    plt.ylabel("Frequency")
-    plt.title(name)
-    outpath = os.path.join(OUTPUT_DIR, f"{name}_hist.png")
-    plt.savefig(outpath)
-    plt.close()
 
 def save_evolution_plot(name, notes, values):
     """Dla algorytmu ewolucyjnego: wykres best/avg/worst po iteracjach."""
@@ -99,6 +95,77 @@ def save_evolution_plot(name, notes, values):
     plt.savefig(outpath)
     plt.close()
 
+
+def compute_stats(data_list):
+    """Zwraca statystyki dla danej grupy algorytmu."""
+    if not data_list:
+        return {"best": "-", "avg": "-", "std": "-"}
+    best = min(d["best"] for d in data_list)
+    avg = statistics.mean(d["best"] for d in data_list)
+    std = statistics.stdev(d["best"] for d in data_list) if len(data_list) > 1 else 0
+    return {"best": best, "avg": avg, "std": std}
+
+
+def group_by_instance(data_list):
+    """Grupuje wyniki wg instancji i algorytmu."""
+    grouped = defaultdict(lambda: defaultdict(list))
+    for d in data_list:
+        rel = os.path.relpath(d["file"], INPUT_DIR)
+        name = rel.lower()
+
+        instance = re.split(r"[/\\]", rel)[0]
+        if "random" in name:
+            grouped[instance]["random"].append(d)
+        elif "greedy" in name:
+            grouped[instance]["greedy"].append(d)
+        elif "evo" in name:
+            grouped[instance]["evo"].append(d)
+    return grouped
+
+
+def save_latex_table(grouped):
+    """Tworzy tabelę LaTeX z wynikami (bez SA)."""
+    latex = []
+    latex.append("\\begin{table}[h!]")
+    latex.append("\\centering")
+    latex.append("\\caption{Porównanie wyników algorytmów}")
+    latex.append("\\begin{tabular}{lccccccccc}")
+    latex.append("\\hline")
+    latex.append("Instancja & \\multicolumn{3}{c}{Random [10k]} & \\multicolumn{3}{c}{Greedy [n]} & "
+                 "\\multicolumn{3}{c}{EA [10x]}\\\\")
+    latex.append("& best & avg & std & best & avg & std & best & avg & std\\\\")
+    latex.append("\\hline")
+
+    def fmt(v):
+        return f"{v:.2f}" if isinstance(v, (int, float)) else str(v)
+
+    for instance, alg_data in grouped.items():
+        def get_alg(name):
+            for key in alg_data.keys():
+                if name.lower() in key.lower():
+                    return alg_data[key]
+            return []
+
+        rand = compute_stats(get_alg("random"))
+        greedy = compute_stats(get_alg("greedy"))
+        evo = compute_stats(get_alg("evo"))
+
+        latex.append(
+            f"{instance} & {fmt(rand['best'])} & {fmt(rand['avg'])} & {fmt(rand['std'])} & "
+            f"{fmt(greedy['best'])} & {fmt(greedy['avg'])} & {fmt(greedy['std'])} & "
+            f"{fmt(evo['best'])} & {fmt(evo['avg'])} & {fmt(evo['std'])} \\\\"
+        )
+
+    latex.append("\\hline")
+    latex.append("\\end{tabular}")
+    latex.append("\\end{table}")
+
+    with open(os.path.join(OUTPUT_DIR, "table_results.tex"), "w", encoding="utf-8") as f:
+        f.write("\n".join(latex))
+
+    print("[OK] Zapisano tabelę: report_output/table_results.tex")
+
+
 def main():
     print(f"[INFO] Analiza wyników w katalogu: {INPUT_DIR}")
     csv_files = find_csv_files(INPUT_DIR)
@@ -106,49 +173,25 @@ def main():
         print("[WARN] Nie znaleziono plików CSV!")
         return
 
-    summary_lines = []
-    latex_lines = [
-        "\\section{Wyniki eksperymentów}",
-        "Poniżej przedstawiono analizę wyników z plików CSV generowanych przez algorytmy."
-    ]
-
+    data_all = []
     for path in csv_files:
-        rel_name = os.path.relpath(path, INPUT_DIR)
-        name = re.sub(r"[\\/]", "_", rel_name.replace(".csv", ""))
-        data = analyze_file(path)
-        if not data:
-            continue
+        name = re.sub(r"[\\/]", "_", os.path.relpath(path, INPUT_DIR).replace(".csv", ""))
+        d = analyze_file(path)
+        if d:
+            data_all.append(d)
+            if "evo" in name:
+                save_evolution_plot(name, d["notes"], d["values"])
 
-        summary_lines.append(
-            f"{rel_name}: count={data['count']}, avg={data['avg']:.2f}, best={data['best']:.2f}, worst={data['worst']:.2f}"
-        )
+    grouped = group_by_instance(data_all)
+    save_latex_table(grouped)
 
-        # Histogram
-        save_histogram(name, data["values"])
-
-        # Wykres ewolucyjny (jeśli to plik z evo)
-        if "evo" in rel_name.lower():
-            save_evolution_plot(name, data["notes"], data["values"])
-
-        # LaTeX
-        latex_lines.append(f"\\subsection{{{rel_name}}}")
-        latex_lines.append(
-            f"Średnia wartość: {data['avg']:.2f}, najlepsza: {data['best']:.2f}, najgorsza: {data['worst']:.2f}."
-        )
-
-        latex_lines.append(f"\\includegraphics[width=0.8\\linewidth]{{report_output/{name}_hist.png}}")
-        if "evo" in rel_name.lower():
-            latex_lines.append(f"\\includegraphics[width=0.8\\linewidth]{{report_output/{name}_evo.png}}")
-
-    # Zapis tekstowego podsumowania
+    # zapis tekstowy
     with open(os.path.join(OUTPUT_DIR, "summary.txt"), "w", encoding="utf-8") as f:
-        f.write("\n".join(summary_lines))
+        for d in data_all:
+            f.write(f"{d['file']}: best={d['best']:.2f}, avg={d['avg']:.2f}, worst={d['worst']:.2f}\n")
 
-    # Zapis LaTeX
-    with open(os.path.join(OUTPUT_DIR, "summary_auto.tex"), "w", encoding="utf-8") as f:
-        f.write("\n\n".join(latex_lines))
+    print("[OK] Analiza zakończona. Wyniki w folderze:", OUTPUT_DIR)
 
-    print(f"[OK] Analiza zakończona. Wyniki zapisano w folderze: {OUTPUT_DIR}")
 
 if __name__ == "__main__":
     main()

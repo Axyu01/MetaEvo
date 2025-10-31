@@ -1,0 +1,105 @@
+=== a-n32-k5 ===
+random: best=1613.33, avg=2139.87, std=142.29
+gready: best=1087.38, avg=1219.45, std=81.93
+evo (10 trials)
+  A-n32-k5_trial_1.csv: best=867.82, avg=1006.22, std=151.28
+  A-n32-k5_trial_10.csv: best=817.16, avg=884.08, std=152.88
+  A-n32-k5_trial_2.csv: best=847.11, avg=905.63, std=143.43
+  A-n32-k5_trial_3.csv: best=925.01, avg=980.42, std=138.43
+  A-n32-k5_trial_4.csv: best=847.15, avg=913.62, std=157.96
+  A-n32-k5_trial_5.csv: best=841.91, avg=913.12, std=158.45
+  A-n32-k5_trial_6.csv: best=841.40, avg=903.74, std=147.55
+  A-n32-k5_trial_7.csv: best=886.90, avg=970.89, std=153.13
+  A-n32-k5_trial_8.csv: best=886.56, avg=980.36, std=148.79
+  A-n32-k5_trial_9.csv: best=884.09, avg=941.83, std=144.47
+
+=== a-n37-k6 ===
+random: best=1746.42, avg=2236.29, std=133.17
+gready: best=1262.79, avg=1431.07, std=81.30
+evo (10 trials)
+  A-n37-k6_trial_1.csv: best=1015.35, avg=1079.51, std=152.81
+  A-n37-k6_trial_10.csv: best=995.98, avg=1079.78, std=171.55
+  A-n37-k6_trial_2.csv: best=1021.80, avg=1110.55, std=149.61
+  A-n37-k6_trial_3.csv: best=1012.59, avg=1105.19, std=172.56
+  A-n37-k6_trial_4.csv: best=984.07, avg=1073.97, std=173.51
+  A-n37-k6_trial_5.csv: best=1014.37, avg=1101.89, std=173.88
+  A-n37-k6_trial_6.csv: best=982.88, avg=1097.16, std=168.10
+  A-n37-k6_trial_7.csv: best=1011.04, avg=1097.96, std=179.31
+  A-n37-k6_trial_8.csv: best=1022.77, avg=1094.22, std=156.30
+  A-n37-k6_trial_9.csv: best=1009.12, avg=1100.46, std=164.10
+
+=== a-n39-k5 ===
+random: best=1544.33, avg=2193.50, std=130.14
+gready: best=1104.57, avg=1276.97, std=116.01
+evo (10 trials)
+  A-n39-k5_trial_1.csv: best=904.02, avg=986.76, std=160.47
+  A-n39-k5_trial_10.csv: best=973.40, avg=1049.23, std=159.61
+  A-n39-k5_trial_2.csv: best=871.89, avg=985.45, std=190.01
+  A-n39-k5_trial_3.csv: best=913.36, avg=1018.46, std=184.52
+  A-n39-k5_trial_4.csv: best=927.90, avg=1022.54, std=166.52
+  A-n39-k5_trial_5.csv: best=887.81, avg=955.97, std=165.04
+  A-n39-k5_trial_6.csv: best=1022.82, avg=1081.37, std=140.34
+  A-n39-k5_trial_7.csv: best=922.92, avg=1000.87, std=171.67
+  A-n39-k5_trial_8.csv: best=906.79, avg=999.75, std=158.39
+  A-n39-k5_trial_9.csv: best=915.38, avg=993.22, std=160.51
+
+=== a-n45-k6 ===
+random: best=2175.44, avg=2830.77, std=152.44
+gready: best=1401.42, avg=1545.80, std=95.21
+evo (10 trials)
+  A-n45-k6_trial_1.csv: best=1051.44, avg=1213.04, std=271.09
+  A-n45-k6_trial_10.csv: best=996.67, avg=1143.10, std=268.07
+  A-n45-k6_trial_2.csv: best=1123.79, avg=1244.89, std=242.83
+  A-n45-k6_trial_3.csv: best=1202.19, avg=1291.20, std=202.39
+  A-n45-k6_trial_4.csv: best=1057.58, avg=1207.48, std=258.83
+  A-n45-k6_trial_5.csv: best=1151.15, avg=1269.84, std=236.78
+  A-n45-k6_trial_6.csv: best=1100.72, avg=1231.79, std=261.65
+  A-n45-k6_trial_7.csv: best=1158.94, avg=1285.28, std=232.91
+  A-n45-k6_trial_8.csv: best=1096.85, avg=1236.33, std=246.48
+  A-n45-k6_trial_9.csv: best=1017.24, avg=1246.84, std=253.53
+
+=== a-n48-k7 ===
+random: best=2368.16, avg=2979.09, std=172.62
+gready: best=1476.72, avg=1607.45, std=66.89
+evo (10 trials)
+  A-n48-k7_trial_1.csv: best=1270.45, avg=1387.13, std=236.89
+  A-n48-k7_trial_10.csv: best=1306.19, avg=1434.22, std=236.81
+  A-n48-k7_trial_2.csv: best=1313.62, avg=1438.15, std=241.69
+  A-n48-k7_trial_3.csv: best=1164.15, avg=1329.73, std=267.67
+  A-n48-k7_trial_4.csv: best=1142.02, avg=1340.29, std=278.41
+  A-n48-k7_trial_5.csv: best=1199.92, avg=1325.84, std=242.84
+  A-n48-k7_trial_6.csv: best=1299.02, avg=1402.38, std=226.17
+  A-n48-k7_trial_7.csv: best=1185.01, avg=1379.03, std=253.44
+  A-n48-k7_trial_8.csv: best=1278.59, avg=1389.44, std=223.50
+  A-n48-k7_trial_9.csv: best=1321.16, avg=1444.12, std=240.33
+
+=== a-n54-k7 ===
+random: best=2653.10, avg=3308.03, std=171.73
+gready: best=1625.52, avg=1811.88, std=73.77
+evo (10 trials)
+  A-n54-k7_trial_1.csv: best=1304.17, avg=1529.34, std=325.09
+  A-n54-k7_trial_10.csv: best=1404.35, avg=1573.43, std=296.21
+  A-n54-k7_trial_2.csv: best=1367.14, avg=1513.74, std=287.33
+  A-n54-k7_trial_3.csv: best=1284.96, avg=1544.92, std=337.21
+  A-n54-k7_trial_4.csv: best=1299.01, avg=1570.59, std=310.59
+  A-n54-k7_trial_5.csv: best=1445.94, avg=1583.86, std=273.54
+  A-n54-k7_trial_6.csv: best=1325.16, avg=1508.87, std=294.09
+  A-n54-k7_trial_7.csv: best=1356.29, avg=1526.11, std=298.13
+  A-n54-k7_trial_8.csv: best=1416.97, avg=1589.60, std=295.39
+  A-n54-k7_trial_9.csv: best=1388.46, avg=1542.13, std=278.51
+
+=== a-n60-k9 ===
+random: best=3041.61, avg=3721.21, std=177.18
+gready: best=1883.78, avg=2094.29, std=110.66
+evo (10 trials)
+  A-n60-k9_trial_1.csv: best=1579.19, avg=1810.67, std=340.95
+  A-n60-k9_trial_10.csv: best=1567.85, avg=1771.30, std=342.96
+  A-n60-k9_trial_2.csv: best=1653.34, avg=1850.15, std=324.46
+  A-n60-k9_trial_3.csv: best=1563.25, avg=1785.11, std=351.23
+  A-n60-k9_trial_4.csv: best=1604.16, avg=1815.72, std=313.37
+  A-n60-k9_trial_5.csv: best=1549.21, avg=1878.51, std=320.55
+  A-n60-k9_trial_6.csv: best=1598.96, avg=1771.50, std=299.63
+  A-n60-k9_trial_7.csv: best=1512.44, avg=1849.91, std=333.44
+  A-n60-k9_trial_8.csv: best=1546.67, avg=1764.41, std=342.49
+  A-n60-k9_trial_9.csv: best=1443.76, avg=1727.53, std=396.63
+

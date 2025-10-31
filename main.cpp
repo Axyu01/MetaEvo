@@ -44,10 +44,10 @@ int main()
 
     GreadySolution* greadySolution = new GreadySolution(*problem);
     greadySolution->Print("Gready Solution");
-    /*
+
     PopParameters params;
     params.crossOperator = CrossOps::CycleCrossover;
-    params.mutationOperator = MutationOps::Inverse;
+    params.mutationOperator = MutationOps::Swap;
     params.mutation_chance = 0.3;
     params.crossover_chance = 1;
     params.init_population_size = 2000;
@@ -57,7 +57,7 @@ int main()
     EvoAlgorithm* alg = new EvoAlgorithm(params);
     Population* population = alg->_population;
     alg->Start();
-    for(int i=0;i<100;i++)
+    for(int i=0;i<1000;i++)
     {
         alg->Loop();
     }
@@ -69,7 +69,7 @@ int main()
     logger->Log(population->Solutions,"end population");
     delete alg;
     delete logger;
-    */
+
     Tests::TestSA();
     //Tests::TestRandom();
     //Tests::TestGready();

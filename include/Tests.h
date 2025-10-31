@@ -3,6 +3,7 @@
 #include <string>
 #include "CVRProblem.h"
 #include <Population.h>
+#include <SAAlgorithm.h>
 
 class Tests
 {
@@ -16,6 +17,9 @@ class Tests
         static void TestEvo();
         static void TestEvo(CVRProblem& problem,std::string dir,PopParameters popParams,int iterations);
         static void TestSA();
+        static void TestSA(CVRProblem& problem, std::string dir,
+                   double startTemp, double minTemp, double alpha,
+                   int iterationsPerTemp, int maxNoImprove,int trials);
         static CVRProblem* _problem;
 
     protected:

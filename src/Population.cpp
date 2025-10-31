@@ -136,7 +136,7 @@ void Population::Mutate()
     {
         if((double)rand()/RAND_MAX<=Params.mutation_chance)
         {
-            Params.mutationOperator(*s);
+            Params.mutationOperator(*s,Params.mutation_chance);
         }
     }
 }

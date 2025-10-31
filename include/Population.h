@@ -9,7 +9,7 @@ struct PopParameters
     int selection_population_size = 30;
     double mutation_chance;
     double crossover_chance;
-    void (*mutationOperator)(Solution& s);
+    void (*mutationOperator)(Solution& s,double mutChance);
     Solution* (*crossOperator)(Solution& s1,Solution& s2);
     Solution* (*randSolutionCreator)();
     double (*evaluator)(Solution& s);

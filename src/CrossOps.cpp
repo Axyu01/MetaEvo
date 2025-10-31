@@ -189,7 +189,6 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
     int* parent2 = new int[size];
     int* child   = new int[size];
 
-    // === 1️⃣  Zamiana zer na unikalne wartości (osobno dla każdego rodzica) ===
     int zeroId1 = -1;
     int zeroId2 = -1;
 
@@ -201,25 +200,21 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
         if (s2.Representation[i] == 0) parent2[i] = zeroId2--;
         else parent2[i] = s2.Representation[i];
 
-        child[i] = -1; // puste miejsce w dziecku
+        child[i] = -1;
     }
 
-    // === 2️⃣  Losowanie punktów krzyżowania ===
     int start = rand() % size;
     int end = rand() % size;
     if (start > end) std::swap(start, end);
 
-    // === 3️⃣  Kopiowanie segmentu z parent1 do dziecka ===
     for (int i = start; i <= end; i++)
         child[i] = parent1[i];
 
-    // === 4️⃣  Tworzenie mapowania i rozwiązywanie konfliktów ===
     for (int i = start; i <= end; i++)
     {
         int val1 = parent1[i];
         int val2 = parent2[i];
 
-        // jeśli val2 już istnieje w dziecku — pomiń
         bool exists = false;
         for (int j = 0; j < size; j++)
         {
@@ -237,7 +232,6 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
             int conflictVal = parent2[pos];
             pos = -1;
 
-            // znajdź konfliktową wartość w parent1
             for (int j = 0; j < size; j++)
             {
                 if (parent1[j] == conflictVal)
@@ -247,7 +241,6 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
                 }
             }
 
-            // jeśli miejsce puste, wpisz i zakończ
             if (pos == -1 || child[pos] == -1)
             {
                 child[pos] = val2;
@@ -256,7 +249,6 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
         }
     }
 
-    // === 5️⃣  Uzupełnij brakujące pozycje z parent2 ===
     for (int i = 0; i < size; i++)
     {
         if (child[i] == -1)
@@ -265,7 +257,6 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
             {
                 int gene = parent2[j];
 
-                // sprawdź, czy już istnieje
                 bool exists = false;
                 for (int k = 0; k < size; k++)
                 {
@@ -283,14 +274,12 @@ Solution* CrossOps::PMXCrossover(Solution& s1, Solution& s2)
         }
     }
 
-    // === 6️⃣  Przywróć zera (ujemne → 0) ===
     for (int i = 0; i < size; i++)
     {
         if (child[i] < 0)
             child[i] = 0;
     }
 
-    // === 7️⃣  Utwórz rozwiązanie i posprzątaj pamięć ===
     Solution* offspring = new Solution(size);
     for (int i = 0; i < size; i++)
         offspring->Representation[i] = child[i];
