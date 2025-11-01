@@ -227,9 +227,6 @@ void Tests::TestEvo(CVRProblem& problem, std::string dir, PopParameters popParam
 // =====================================================
 // Simulated Annealing tests
 // =====================================================
-
-#include "SAAlgorithm.h"
-
 void Tests::TestSA()
 {
     CVRProblem problem1("CVRP_files/A-n32-k5.vrp");
@@ -245,7 +242,7 @@ void Tests::TestSA()
     double minTemp = 0.001;
     double alpha = 0.95;
     int iterationsPerTemp = 10000;
-    int maxNoImprove = 50000;
+    int maxNoImprove = 500000;
     int trials = 10;
 
     TestSA(problem1, "out/CVRP_files/sa/A-n32-k5", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);
