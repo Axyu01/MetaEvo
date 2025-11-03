@@ -7,12 +7,17 @@ struct PopParameters
 {
     int init_population_size = 100;
     int selection_population_size = 30;
+    int elitism_count = 1;
     double mutation_chance;
     double crossover_chance;
     void (*mutationOperator)(Solution& s,double mutChance);
     Solution* (*crossOperator)(Solution& s1,Solution& s2);
     Solution* (*randSolutionCreator)();
     double (*evaluator)(Solution& s);
+    double BEST_W = 1;
+    double WORST_W = 40;
+    double interpolation_strength = 1;
+    bool useRulate = true;
 };
 class Population
 {
@@ -34,6 +39,7 @@ class Population
 
         PopParameters Params;
         std::vector<Solution*> Solutions;
+        std::vector<Solution*> Elites;
 
     protected:
 

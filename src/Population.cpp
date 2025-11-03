@@ -2,6 +2,7 @@
 #include "cstdlib"
 #include <algorithm>
 #include <iostream>
+#include <math.h>
 Population::Population(PopParameters params)
 {
     Params = params;
@@ -45,19 +46,34 @@ void Population::Sort()
 }
 void Population::Select()
 {
-    bool useRulate = false;
+    bool useRulate = Params.useRulate;
 
     int desiredPop = Params.selection_population_size;
     int popSize = Solutions.size();
 
     if (popSize <= desiredPop)
         return;
-    if(useRulate == false)
+    Sort();
+    if(useRulate == true)
     {
         Sort();
-    }
-    else
-    {
+        //Reevaluate
+        double BEST_W = Params.BEST_W;
+        double WORST_W = Params.WORST_W;
+        double interpolation_strength = Params.interpolation_strength;
+
+        int elitismCount = std::min(Params.elitism_count, (int)Solutions.size());
+
+        for(int i=0; i<elitismCount; i++)
+        {
+            Solutions[i]->Value = 0;//protecting the elites
+        }
+        for(int i=elitismCount; i<popSize; i++)
+        {
+            double interpolation =(double)i/popSize;
+            interpolation = std::pow(interpolation,interpolation_strength);
+            Solutions[i]->Value = BEST_W +(WORST_W-BEST_W)*interpolation;
+        }
         //Rulate
         double maxEstim = 0;
 
@@ -65,12 +81,15 @@ void Population::Select()
         {
             maxEstim += Solutions[i]->Value;
         }
-        double randomEstim;
 
         for(int i=0; i<popSize-desiredPop; i++)
         {
-            double maxPercentage = static_cast<double>(rand()) / RAND_MAX;
-            double eliminationValue = maxPercentage * maxEstim;
+            double eliminationValue = 0;
+            while(eliminationValue == 0)
+            {
+                double maxPercentage = static_cast<double>(rand()) / RAND_MAX;
+                eliminationValue = maxPercentage * maxEstim;
+            }
             double currentValueSum = 0;
             int eliminatedSolution = 0;
 
@@ -136,11 +155,14 @@ void Population::Cross()
 }
 void Population::Mutate()
 {
-    for(Solution* s : Solutions)
+    int elitismCount = std::min(Params.elitism_count, (int)Solutions.size());
+
+    for (int i = elitismCount; i < Solutions.size(); ++i)
     {
-        if((double)rand()/RAND_MAX<=Params.mutation_chance)
+        Solution* s = Solutions[i];
+        if ((double)rand() / RAND_MAX <= Params.mutation_chance)
         {
-            Params.mutationOperator(*s,Params.mutation_chance);
+            Params.mutationOperator(*s, Params.mutation_chance);
         }
     }
 }

@@ -181,21 +181,23 @@ void Tests::TestEvo()
     PopParameters params;
     params.crossOperator = CrossOps::CycleCrossover;
     params.mutationOperator = MutationOps::Inverse;
-    params.mutation_chance = 0.1;
+    params.mutation_chance = 0.3;
     params.crossover_chance = 0.7;
     params.init_population_size = 1000;
-    params.selection_population_size = 200;
     params.randSolutionCreator = _randSol;
     params.evaluator = _estimate;
+    params.elitism_count = 50;
 
     const int ITERATIONS = 1500;
     params.selection_population_size = 200;
     TestEvo(problem1, "out/CVRP_files/evo/A-n32-k5", params, ITERATIONS);
     TestEvo(problem2, "out/CVRP_files/evo/A-n37-k6", params, ITERATIONS);
     TestEvo(problem3, "out/CVRP_files/evo/A-n39-k5", params, ITERATIONS);
+    params.elitism_count = 75;
     params.selection_population_size = 300;
     TestEvo(problem4, "out/CVRP_files/evo/A-n45-k6", params, ITERATIONS);
     TestEvo(problem5, "out/CVRP_files/evo/A-n48-k7", params, ITERATIONS);
+    params.elitism_count = 100;
     params.selection_population_size = 400;
     TestEvo(problem6, "out/CVRP_files/evo/A-n54-k7", params, ITERATIONS);
     TestEvo(problem7, "out/CVRP_files/evo/A-n60-k9", params, ITERATIONS);

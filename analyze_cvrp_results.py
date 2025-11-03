@@ -16,7 +16,7 @@ def read_csv(filepath):
     values, notes = [], []
     with open(filepath, encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
-        next(reader, None)  # pomiń nagłówek
+        next(reader, None)
         for row in reader:
             if len(row) >= 3 and row[0].strip():
                 try:
@@ -53,7 +53,7 @@ def analyze_file(filepath):
 
 
 def find_csv_files(base_dir):
-    """Rekurencyjnie znajduje wszystkie pliki CSV."""
+    """Znajduje wszystkie pliki CSV w katalogu bazowym."""
     csv_files = []
     for root, _, files in os.walk(base_dir):
         for f in files:
@@ -63,7 +63,7 @@ def find_csv_files(base_dir):
 
 
 def save_evolution_plot(name, notes, values, title):
-    """Wykres best/avg/worst po iteracjach (dla EA lub SA)."""
+    """Tworzy wykres postępu (dla EA lub SA)."""
     iter_groups = defaultdict(list)
     for val, note in zip(values, notes):
         if not note:
@@ -95,12 +95,23 @@ def save_evolution_plot(name, notes, values, title):
     plt.close()
 
 
-def compute_stats(data_list):
-    """Zwraca statystyki dla danej grupy algorytmu."""
+def compute_stats(data_list, alg_name):
+    """Zwraca statystyki z uwzględnieniem różnic między algorytmami."""
     if not data_list:
         return {"best": "-", "worst": "-", "avg": "-", "std": "-"}
+
+    # === Dla Random i Greedy – tylko jeden plik ===
+    if alg_name in ("random", "greedy"):
+        d = data_list[0]
+        best = d["best"]
+        worst = d["worst"]
+        avg = d["avg"]
+        std = d["std"]  # z wewnętrznych wartości pliku
+        return {"best": best, "worst": worst, "avg": avg, "std": std}
+
+    # === Dla Evo i SA – wiele plików (10 triali) ===
     bests = [d["best"] for d in data_list]
-    worst = max(bests)  # najgorszy z najlepszych
+    worst = max(bests)
     best = min(bests)
     avg = statistics.mean(bests)
     std = statistics.stdev(bests) if len(bests) > 1 else 0
@@ -108,13 +119,11 @@ def compute_stats(data_list):
 
 
 def group_by_instance(data_list):
-    """Grupuje wyniki wg instancji i algorytmu."""
+    """Grupuje dane wg instancji i algorytmu."""
     grouped = defaultdict(lambda: defaultdict(list))
     for d in data_list:
         rel = os.path.relpath(d["file"], INPUT_DIR)
         name = rel.lower()
-
-        # Instancja to np. "A-n32-k5.vrp" lub "A-n32-k5"
         match = re.search(r"(a-n\d+-k\d+)", name)
         instance = match.group(1) if match else rel
 
@@ -130,35 +139,47 @@ def group_by_instance(data_list):
 
 
 def save_latex_table(grouped):
-    """Tworzy tabelę LaTeX z wynikami (wraz z SA)."""
+    """Tworzy tabelę LaTeX z kolumnami best/worst/avg/std."""
     latex = []
     latex.append("\\begin{table}[h!]")
     latex.append("\\centering")
     latex.append("\\caption{Porównanie wyników algorytmów dla CVRP}")
-    latex.append("\\begin{tabular}{lcccccccccccc}")
+    latex.append("\\begin{tabular}{lcccccccccccccccc}")
     latex.append("\\hline")
-    latex.append("Instancja & \\multicolumn{3}{c}{Random [10k]} & "
-                 "\\multicolumn{3}{c}{Greedy [n]} & "
-                 "\\multicolumn{3}{c}{EA [10x]} & "
-                 "\\multicolumn{3}{c}{SA [10x]}\\\\")
-    latex.append("& best & avg & std & best & avg & std & best & avg & std & best & avg & std\\\\")
+    latex.append(
+        "Instancja & \\multicolumn{4}{c}{Random [10k]} & "
+        "\\multicolumn{4}{c}{Greedy [n]} & "
+        "\\multicolumn{4}{c}{EA [10x]} & "
+        "\\multicolumn{4}{c}{SA [10x]} \\\\"
+    )
+    latex.append(
+        "& best & worst & avg & std "
+        "& best & worst & avg & std "
+        "& best & worst & avg & std "
+        "& best & worst & avg & std \\\\"
+    )
     latex.append("\\hline")
 
+    #def fmt(v):
+    #    return f"{v:.2f}" if isinstance(v, (int, float)) else str(v)
     def fmt(v):
-        return f"{v:.2f}" if isinstance(v, (int, float)) else str(v)
+        if isinstance(v, (int, float)):
+            return f"{int(round(v))}"
+        return str(v)
 
-    for instance, alg_data in grouped.items():
-        rand = compute_stats(alg_data.get("random", []))
-        greedy = compute_stats(alg_data.get("greedy", []))
-        evo = compute_stats(alg_data.get("evo", []))
-        sa = compute_stats(alg_data.get("sa", []))
+
+    for instance, alg_data in sorted(grouped.items()):
+        rand = compute_stats(alg_data.get("random", []), "random")
+        greedy = compute_stats(alg_data.get("greedy", []), "greedy")
+        evo = compute_stats(alg_data.get("evo", []), "evo")
+        sa = compute_stats(alg_data.get("sa", []), "sa")
 
         latex.append(
             f"{instance} & "
-            f"{fmt(rand['best'])} & {fmt(rand['avg'])} & {fmt(rand['std'])} & "
-            f"{fmt(greedy['best'])} & {fmt(greedy['avg'])} & {fmt(greedy['std'])} & "
-            f"{fmt(evo['best'])} & {fmt(evo['avg'])} & {fmt(evo['std'])} & "
-            f"{fmt(sa['best'])} & {fmt(sa['avg'])} & {fmt(sa['std'])} \\\\"
+            f"{fmt(rand['best'])} & {fmt(rand['worst'])} & {fmt(rand['avg'])} & {fmt(rand['std'])} & "
+            f"{fmt(greedy['best'])} & {fmt(greedy['worst'])} & {fmt(greedy['avg'])} & {fmt(greedy['std'])} & "
+            f"{fmt(evo['best'])} & {fmt(evo['worst'])} & {fmt(evo['avg'])} & {fmt(evo['std'])} & "
+            f"{fmt(sa['best'])} & {fmt(sa['worst'])} & {fmt(sa['avg'])} & {fmt(sa['std'])} \\\\"
         )
 
     latex.append("\\hline")
@@ -168,7 +189,7 @@ def save_latex_table(grouped):
     with open(os.path.join(OUTPUT_DIR, "table_results.tex"), "w", encoding="utf-8") as f:
         f.write("\n".join(latex))
 
-    print("[OK] Zapisano tabelę: report_output/table_results.tex")
+    print("[OK] Zapisano tabelę z poprawnym std: report_output/table_results.tex")
 
 
 def main():
@@ -185,6 +206,7 @@ def main():
             data_all.append(d)
             name = re.sub(r"[\\/]", "_", os.path.relpath(path, INPUT_DIR).replace(".csv", ""))
 
+            # Rysowanie wykresów
             if "evo" in name.lower():
                 save_evolution_plot(name, d["notes"], d["values"], f"Evolutionary Progress: {name}")
             elif "sa" in name.lower():
@@ -193,7 +215,6 @@ def main():
     grouped = group_by_instance(data_all)
     save_latex_table(grouped)
 
-    # Tekstowe podsumowanie
     with open(os.path.join(OUTPUT_DIR, "summary.txt"), "w", encoding="utf-8") as f:
         for d in data_all:
             f.write(f"{d['file']}: best={d['best']:.2f}, avg={d['avg']:.2f}, worst={d['worst']:.2f}\n")

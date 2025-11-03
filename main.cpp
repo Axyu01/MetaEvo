@@ -14,6 +14,7 @@
 
 using namespace std;
 CVRProblem* problem;
+
 Solution* randSol()
 {
     int dim = problem->GetDimension();
@@ -26,28 +27,11 @@ double estimate(Solution& s)
 {
     return problem->EstimateSolution(s);
 }
-int main()
+void evoTest()
 {
-    //auto SEED = 1760195673;//
-    auto SEED = time(NULL);
-    srand(SEED);
-    cout << "SEED:"<<SEED << endl;
-    problem = new CVRProblem("CVRP_files/A-n60-k9.vrp");
-
-    //problem->LoadFromFile("CVRP_files/toy.vrp");
-    //problem->Print();
-    //int optimalSolution[] = {1,4,0,3,2,5};// for toy.vrp
-
-    Solution* randomSolution = randSol();
-    randomSolution->Value = problem->EstimateSolution(*randomSolution);
-    randomSolution->Print("Random Solution");
-
-    GreadySolution* greadySolution = new GreadySolution(*problem);
-    greadySolution->Print("Gready Solution");
-
     PopParameters params;
     params.crossOperator = CrossOps::CycleCrossover;
-    params.mutationOperator = MutationOps::Swap;
+    params.mutationOperator = MutationOps::Inverse;
     params.mutation_chance = 0.3;
     params.crossover_chance = 1;
     params.init_population_size = 2000;
@@ -69,6 +53,27 @@ int main()
     logger->Log(population->Solutions,"end population");
     delete alg;
     delete logger;
+}
+int main()
+{
+    //auto SEED = 1760195673;//
+    auto SEED = time(NULL);
+    srand(SEED);
+    cout << "SEED:"<<SEED << endl;
+    problem = new CVRProblem("CVRP_files/A-n60-k9.vrp");
+
+    //problem->LoadFromFile("CVRP_files/toy.vrp");
+    //problem->Print();
+    //int optimalSolution[] = {1,4,0,3,2,5};// for toy.vrp
+
+    Solution* randomSolution = randSol();
+    randomSolution->Value = problem->EstimateSolution(*randomSolution);
+    randomSolution->Print("Random Solution");
+
+    GreadySolution* greadySolution = new GreadySolution(*problem);
+    greadySolution->Print("Gready Solution");
+
+    //evoTest();
 
     //Tests::TestSA();
     //Tests::TestRandom();
