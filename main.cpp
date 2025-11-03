@@ -70,7 +70,7 @@ int main()
     delete alg;
     delete logger;
 
-    Tests::TestSA();
+    //Tests::TestSA();
     //Tests::TestRandom();
     //Tests::TestGready();
     //Tests::TestEvo();

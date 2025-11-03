@@ -84,6 +84,10 @@ void Population::Select()
                     eliminatedSolution = s;
                     break;
                 }
+                else
+                {
+                    currentValueSum+=sValue;
+                }
             }
             //Swap with last to allow elimination at the end
             int lastSolution = popSize-i-1;
