@@ -11,27 +11,30 @@ OUTPUT_DIR = "report_output"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 # =============================
 
+
 def read_csv(filepath):
-    """Wczytuje dane z pliku CSV zapisanych przez SolutionsLogger."""
-    values, notes = [], []
+    """Wczytuje dane z pliku CSV zapisanych przez SolutionsLogger (Value;Genome;Note)."""
+    values, genomes, notes = [], [], []
     with open(filepath, encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
-        next(reader, None)
+        next(reader, None)  # pomijamy nagłówek
         for row in reader:
             if len(row) >= 3 and row[0].strip():
                 try:
                     val = float(row[0])
+                    genome = row[1].strip()
                     note = row[2].strip()
                     values.append(val)
+                    genomes.append(genome)
                     notes.append(note)
                 except ValueError:
                     continue
-    return values, notes
+    return values, genomes, notes
 
 
 def analyze_file(filepath):
     """Analizuje pojedynczy plik CSV."""
-    values, notes = read_csv(filepath)
+    values, genomes, notes = read_csv(filepath)
     if not values:
         return None
 
@@ -40,14 +43,20 @@ def analyze_file(filepath):
     worst_val = max(values)
     std_val = statistics.stdev(values) if len(values) > 1 else 0.0
 
+    # znajdź genom najlepszego rozwiązania
+    idx_best = values.index(best_val)
+    best_genome = genomes[idx_best] if idx_best < len(genomes) else "-"
+
     return {
         "file": filepath,
         "count": len(values),
         "avg": avg_val,
         "best": best_val,
+        "best_genome": best_genome,
         "worst": worst_val,
         "std": std_val,
         "values": values,
+        "genomes": genomes,
         "notes": notes
     }
 
@@ -100,16 +109,17 @@ def compute_stats(data_list, alg_name):
     if not data_list:
         return {"best": "-", "worst": "-", "avg": "-", "std": "-"}
 
-    # === Dla Random i Greedy – tylko jeden plik ===
+    # Dla Random i Greedy – tylko jeden plik
     if alg_name in ("random", "greedy"):
         d = data_list[0]
-        best = d["best"]
-        worst = d["worst"]
-        avg = d["avg"]
-        std = d["std"]  # z wewnętrznych wartości pliku
-        return {"best": best, "worst": worst, "avg": avg, "std": std}
+        return {
+            "best": d["best"],
+            "worst": d["worst"],
+            "avg": d["avg"],
+            "std": d["std"]
+        }
 
-    # === Dla Evo i SA – wiele plików (10 triali) ===
+    # Dla Evo i SA – wiele plików (np. 10 triali)
     bests = [d["best"] for d in data_list]
     worst = max(bests)
     best = min(bests)
@@ -160,13 +170,10 @@ def save_latex_table(grouped):
     )
     latex.append("\\hline")
 
-    #def fmt(v):
-    #    return f"{v:.2f}" if isinstance(v, (int, float)) else str(v)
     def fmt(v):
         if isinstance(v, (int, float)):
             return f"{int(round(v))}"
         return str(v)
-
 
     for instance, alg_data in sorted(grouped.items()):
         rand = compute_stats(alg_data.get("random", []), "random")
@@ -189,7 +196,7 @@ def save_latex_table(grouped):
     with open(os.path.join(OUTPUT_DIR, "table_results.tex"), "w", encoding="utf-8") as f:
         f.write("\n".join(latex))
 
-    print("[OK] Zapisano tabelę z poprawnym std: report_output/table_results.tex")
+    print("[OK] Zapisano tabelę LaTeX: report_output/table_results.tex")
 
 
 def main():
@@ -215,9 +222,27 @@ def main():
     grouped = group_by_instance(data_all)
     save_latex_table(grouped)
 
+    # summary.txt z genomami
     with open(os.path.join(OUTPUT_DIR, "summary.txt"), "w", encoding="utf-8") as f:
         for d in data_all:
-            f.write(f"{d['file']}: best={d['best']:.2f}, avg={d['avg']:.2f}, worst={d['worst']:.2f}\n")
+            alg = "Unknown"
+            name = d["file"].lower()
+            if "evo" in name:
+                alg = "Evolutionary"
+            elif "sa" in name:
+                alg = "Simulated Annealing"
+            elif "greedy" in name or "gready" in name:
+                alg = "Greedy"
+            elif "random" in name:
+                alg = "Random"
+
+            f.write(
+                f"{alg} | {d['file']}:\n"
+                f"  best   = {d['best']:.2f}\n"
+                f"  avg    = {d['avg']:.2f}\n"
+                f"  worst  = {d['worst']:.2f}\n"
+                f"  genome = {d['best_genome']}\n\n"
+            )
 
     print("[OK] Analiza zakończona. Wyniki w folderze:", OUTPUT_DIR)
 
