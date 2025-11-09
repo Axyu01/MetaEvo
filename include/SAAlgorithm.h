@@ -38,7 +38,7 @@ private:
     Solution* Neighbor(Solution* s);       // generates neighborhood (with swap)
     double AcceptanceProbability(double oldVal, double newVal, double T);
     void CopySolution(Solution*& dest, const Solution* src);
-    void PrintStatus(double T, int iter, double bestVal)
+    void PrintStatus(double T, int iter, double bestVal);
 };
 
 #endif // SAALGORITHM_H

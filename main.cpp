@@ -60,7 +60,7 @@ int main()
     auto SEED = time(NULL);
     srand(SEED);
     cout << "SEED:"<<SEED << endl;
-    problem = new CVRProblem("CVRP_files/A-n60-k9.vrp");
+    problem = new CVRProblem("CVRP_files/A-n32-k5.vrp");
 
     //problem->LoadFromFile("CVRP_files/toy.vrp");
     //problem->Print();
@@ -73,7 +73,13 @@ int main()
     GreadySolution* greadySolution = new GreadySolution(*problem);
     greadySolution->Print("Gready Solution");
 
-    //evoTest();
+    evoTest();
+
+    //Solution* randomSolution2 = randSol();
+    //Solution* crossedSolution = CrossOps::OrderedCrossover(*randomSolution,*randomSolution2);
+    //randomSolution->Print("rand1");
+    //randomSolution2->Print("rand2");
+    //crossedSolution->Print("crossed");
 
     //Tests::TestSA();
     //Tests::TestRandom();

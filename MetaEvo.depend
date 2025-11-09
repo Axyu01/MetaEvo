@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1762189958 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
+1762705016 source:c:\users\adrian\documents\codeblocks projects\metaevo\main.cpp
 	<iostream>
 	<CVRProblem.h>
 	<GreadySolution.h>
@@ -31,12 +31,13 @@
 	<string>
 	<Solution.h>
 
-1761663296 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\crossops.cpp
+1762705033 source:c:\users\adrian\documents\codeblocks projects\metaevo\src\crossops.cpp
 	"CrossOps.h"
 	"CrossOps.h"
 	<algorithm>
 	<cstdlib>
 	<vector>
+	<iostream>
 
 1760430234 c:\users\adrian\documents\codeblocks projects\metaevo\include\crossops.h
 	<Solution.h>
@@ -126,7 +127,7 @@
 	<iostream>
 	<algorithm>
 
-1762197094 c:\users\adrian\documents\codeblocks projects\metaevo\include\saalgorithm.h
+1762269329 c:\users\adrian\documents\codeblocks projects\metaevo\include\saalgorithm.h
 	"Solution.h"
 	"CVRProblem.h"
 	"SolutionsLogger.h"
