@@ -57,6 +57,9 @@ void Population::Select()
     if(useRulate == true)
     {
         Sort();
+        double min = Solutions[0]->Value;
+        double max = Solutions[popSize-1]->Value;
+        double delta = max-min;
         //Reevaluate
         double BEST_W = Params.BEST_W;
         double WORST_W = Params.WORST_W;
@@ -70,7 +73,8 @@ void Population::Select()
         }
         for(int i=elitismCount; i<popSize; i++)
         {
-            double interpolation =(double)i/popSize;
+            double value = Solutions[i]->Value;
+            double interpolation =(value-min)/delta;
             interpolation = std::pow(interpolation,interpolation_strength);
             Solutions[i]->Value = BEST_W +(WORST_W-BEST_W)*interpolation;
         }

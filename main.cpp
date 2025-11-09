@@ -30,7 +30,7 @@ double estimate(Solution& s)
 void evoTest()
 {
     PopParameters params;
-    params.crossOperator = CrossOps::CycleCrossover;
+    params.crossOperator = CrossOps::PMXCrossover;
     params.mutationOperator = MutationOps::Inverse;
     params.mutation_chance = 0.3;
     params.crossover_chance = 1;
@@ -38,6 +38,10 @@ void evoTest()
     params.selection_population_size = 500;
     params.randSolutionCreator = randSol;
     params.evaluator = estimate;
+    params.BEST_W = 1;
+    params.WORST_W = 10000;
+    params.useRulate = true;
+    params.elitism_count = 100;
     EvoAlgorithm* alg = new EvoAlgorithm(params);
     Population* population = alg->_population;
     alg->Start();
@@ -60,7 +64,7 @@ int main()
     auto SEED = time(NULL);
     srand(SEED);
     cout << "SEED:"<<SEED << endl;
-    problem = new CVRProblem("CVRP_files/A-n32-k5.vrp");
+    problem = new CVRProblem("CVRP_files/A-n60-k9.vrp");
 
     //problem->LoadFromFile("CVRP_files/toy.vrp");
     //problem->Print();

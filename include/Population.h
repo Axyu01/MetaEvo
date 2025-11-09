@@ -15,7 +15,7 @@ struct PopParameters
     Solution* (*randSolutionCreator)();
     double (*evaluator)(Solution& s);
     double BEST_W = 1;
-    double WORST_W = 40;
+    double WORST_W = 100;
     double interpolation_strength = 1;
     bool useRulate = true;
 };
