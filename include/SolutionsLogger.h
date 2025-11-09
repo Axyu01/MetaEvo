@@ -11,7 +11,9 @@ class SolutionsLogger
         SolutionsLogger(const std::string& path);
         virtual ~SolutionsLogger();
         void Log(std::vector<Solution*> solutions,const std::string& note);
+        void Log(Solution* solution,const std::string& note);
         void Log(const std::string& line);
+        void LogSummary(std::vector<Solution*> solutions,const std::string& note);
 
     protected:
 

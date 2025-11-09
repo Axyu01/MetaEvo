@@ -85,10 +85,10 @@ int main()
     //randomSolution2->Print("rand2");
     //crossedSolution->Print("crossed");
 
-    //Tests::TestSA();
-    //Tests::TestRandom();
-    //Tests::TestGready();
-    //Tests::TestEvo();
+    Tests::TestSA();
+    Tests::TestRandom();
+    Tests::TestGready();
+    Tests::TestEvo();
 
 
     return 0;

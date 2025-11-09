@@ -188,7 +188,7 @@ void Tests::TestEvo()
     params.evaluator = _estimate;
     params.elitism_count = 50;
 
-    const int ITERATIONS = 1500;
+    const int ITERATIONS = 1500/10;
     params.selection_population_size = 200;
     TestEvo(problem1, "out/CVRP_files/evo/A-n32-k5", params, ITERATIONS);
     TestEvo(problem2, "out/CVRP_files/evo/A-n37-k6", params, ITERATIONS);
@@ -219,7 +219,7 @@ void Tests::TestEvo(CVRProblem& problem, std::string dir, PopParameters popParam
         for (int i = 0; i < iterations; i++)
         {
             evo.Loop();
-            logger.Log(evo._population->Solutions,std::to_string(i));
+            logger.LogSummary(evo._population->Solutions,std::to_string(i));
         }
 
         evo._population->Sort();
@@ -243,8 +243,8 @@ void Tests::TestSA()
     double startTemp = 1000.0;
     double minTemp = 0.001;
     double alpha = 0.95;
-    int iterationsPerTemp = 10000;
-    int maxNoImprove = 500000;
+    int iterationsPerTemp = 10000/100;
+    int maxNoImprove = 500000/1000;
     int trials = 10;
 
     TestSA(problem1, "out/CVRP_files/sa/A-n32-k5", startTemp, minTemp, alpha, iterationsPerTemp, maxNoImprove, trials);

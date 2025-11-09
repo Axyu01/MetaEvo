@@ -24,4 +24,5 @@ void EvoAlgorithm::Loop()
     _population->Mutate();
     //std::cout<< "Eval"<<std::endl;
     _population->Eval();
+    _population->Sort();
 }

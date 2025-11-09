@@ -5,7 +5,7 @@ REM   Autor: Adrian Sośniak
 REM   Data: 2025-10-27
 REM =====================================
 
-set SCRIPT=analyze_cvrp_results.py
+set SCRIPT=main.py
 set OUTPUT_DIR=report_output
 
 echo =====================================
@@ -41,9 +41,6 @@ echo.
 echo =====================================
 echo [OK] Analiza zakończona pomyślnie!
 echo Wyniki znajdują się w folderze: %OUTPUT_DIR%
-echo - summary.txt
-echo - summary_auto.tex
-echo - *.png (wykresy)
 echo =====================================
 echo.
 

@@ -17,7 +17,7 @@ def read_csv(filepath):
     values, genomes, notes = [], [], []
     with open(filepath, encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
-        next(reader, None)  # pomijamy nagłówek
+        next(reader, None)  # skip header
         for row in reader:
             if len(row) >= 3 and row[0].strip():
                 try:
@@ -30,6 +30,7 @@ def read_csv(filepath):
                 except ValueError:
                     continue
     return values, genomes, notes
+
 
 def analyze_file(filepath):
     """Analizuje pojedynczy plik CSV."""
@@ -58,6 +59,17 @@ def analyze_file(filepath):
         "genomes": genomes,
         "notes": notes
     }
+
+
+def find_csv_files(base_dir):
+    """Znajduje wszystkie pliki CSV w katalogu bazowym."""
+    csv_files = []
+    for root, _, files in os.walk(base_dir):
+        for f in files:
+            if f.endswith(".csv"):
+                csv_files.append(os.path.join(root, f))
+    return csv_files
+
 
 def save_evolution_plot(name, notes, values, title):
     """Tworzy wykres postępu (dla EA lub SA)."""
@@ -188,10 +200,10 @@ def save_latex_table(grouped):
 
 
 def main():
-    print(f"[INFO] Analiza wyników w katalogu: {INPUT_DIR}")
+    print(f"[INFO] Analiza wynikow w katalogu: {INPUT_DIR}")
     csv_files = find_csv_files(INPUT_DIR)
     if not csv_files:
-        print("[WARN] Nie znaleziono plików CSV!")
+        print("[WARN] Nie znaleziono plikow CSV!")
         return
 
     data_all = []
