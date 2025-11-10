@@ -77,7 +77,7 @@ int main()
     GreadySolution* greadySolution = new GreadySolution(*problem);
     greadySolution->Print("Gready Solution");
 
-    evoTest();
+    //evoTest();
 
     //Solution* randomSolution2 = randSol();
     //Solution* crossedSolution = CrossOps::OrderedCrossover(*randomSolution,*randomSolution2);
@@ -85,10 +85,10 @@ int main()
     //randomSolution2->Print("rand2");
     //crossedSolution->Print("crossed");
 
-    Tests::TestSA();
-    Tests::TestRandom();
-    Tests::TestGready();
-    Tests::TestEvo();
+    //Tests::TestSA();
+    //Tests::TestRandom();
+    //Tests::TestGready();
+    //Tests::TestEvo();
 
 
     return 0;

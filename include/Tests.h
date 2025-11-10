@@ -19,7 +19,7 @@ class Tests
         static void TestSA();
         static void TestSA(CVRProblem& problem, std::string dir,
                    double startTemp, double minTemp, double alpha,
-                   int iterationsPerTemp, int maxNoImprove,int trials);
+                   int iterationsPerTemp, int n,int trials);
         static CVRProblem* _problem;
 
     protected:

@@ -123,7 +123,6 @@ def save_evolution_plot(name, notes, bestValues,worstValues,avarageValues, title
     plt.ylabel("Value")
     plt.title(title)
     plt.legend()
-    plt.grid(True, linestyle=":")
 
     outpath = os.path.join(OUTPUT_DIR, f"{name}.png")
     plt.savefig(outpath)
@@ -136,7 +135,6 @@ def save_single_line_plot(name, notes, values, title, ylabel="Value"):
     plt.xlabel("Iteration")
     plt.ylabel(ylabel)
     plt.title(title)
-    plt.grid(True, linestyle=":")
     plt.legend()
 
     outpath = os.path.join(OUTPUT_DIR, f"{name}.png")

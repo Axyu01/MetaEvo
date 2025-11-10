@@ -4,7 +4,7 @@
 #include <algorithm>
 
 SAAlgorithm::SAAlgorithm(CVRProblem& problem)
-    : problem(&problem), rng(std::random_device{}()), uniform(0.0, 1.0)
+    : problem(&problem)
 {
     solution = nullptr;
     bestSolution = nullptr;
@@ -30,13 +30,16 @@ void SAAlgorithm::Init()
 
 Solution* SAAlgorithm::Neighbor(Solution* s)
 {
-    int n = s->Size;
+    int size = s->Size;
     Solution* neighbor = new Solution(*s);
 
-    // Prosty operator SWAP
-    int i = rng() % n;
-    int j = rng() % n;
-    std::swap(neighbor->Representation[i], neighbor->Representation[j]);
+    int i = rand() % size;
+    int j = rand() % size;
+
+    //swap
+    int temp = neighbor->Representation[i];
+    neighbor->Representation[i] = neighbor->Representation[j];
+    neighbor->Representation[j] = temp;
 
     neighbor->Value = problem->EstimateSolution(*neighbor);
     return neighbor;
@@ -46,7 +49,7 @@ double SAAlgorithm::AcceptanceProbability(double oldVal, double newVal, double T
 {
     if (newVal < oldVal)
         return 1.0; // zawsze akceptuj lepsze
-    return std::exp((oldVal - newVal) / T);
+    return 1/(1+std::exp((newVal - oldVal) / T));
 }
 
 void SAAlgorithm::IterateWithLogging(SolutionsLogger& logger, int logInterval)
@@ -56,36 +59,42 @@ void SAAlgorithm::IterateWithLogging(SolutionsLogger& logger, int logInterval)
 
     std::vector<Solution*> logBuffer(1);
     double T = startTemp;
-    int noImprove = 0;
     int iteration = 0;
 
-    std::cout << "[SA] Starting iterations..." << std::endl;
-
-    while (T > minTemp && noImprove < maxNoImprove)
+    while (T > minTemp)
     {
         for (int i = 0; i < iterationsPerTemp; i++)
         {
-            Solution* candidate = Neighbor(solution);
-            double ap = AcceptanceProbability(solution->Value, candidate->Value, T);
-
-            // Akceptacja kandydata
-            if (candidate->Value < solution->Value || uniform(rng) < ap)
+            Solution* candidates[n];
+            Solution* bestCandidate = nullptr;
+            for(int s = 0;s<n;s++)
             {
-                CopySolution(solution, candidate);
+                Solution* candidate = Neighbor(solution);
+                candidates[s] = candidate;
+
+                if(bestCandidate == nullptr || candidate->Value < bestCandidate->Value)
+                    bestCandidate = candidate;
             }
 
-            // Aktualizacja najlepszego
-            if (candidate->Value < bestSolution->Value)
+            double ap = AcceptanceProbability(solution->Value, bestCandidate->Value, T);
+            // Accept
+            if (bestCandidate->Value < solution->Value || (double)rand()/RAND_MAX < ap)
             {
-                CopySolution(bestSolution, candidate);
-                noImprove = 0;
+                if(solution)
+                    delete solution;
+                solution = new Solution(*bestCandidate);
             }
-            else
+            // Update best
+            if (bestCandidate->Value < bestSolution->Value)
             {
-                noImprove++;
+                if(bestSolution)
+                    delete bestSolution;
+                bestSolution = new Solution(*bestCandidate);
             }
-
-            delete candidate;
+            for(int s = 0;s<n;s++)
+            {
+                delete candidates[s];
+            }
             iteration++;
 
             // logowanie co n iteracji
@@ -94,22 +103,12 @@ void SAAlgorithm::IterateWithLogging(SolutionsLogger& logger, int logInterval)
                 logBuffer[0] = solution;
                 logger.Log(logBuffer, std::to_string(iteration));
             }
-
-            if (iteration % 50000 == 0)
-                PrintStatus(T, iteration, bestSolution->Value);
         }
 
-        T *= alpha; // schładzanie
+        T *= alpha; // cooling
     }
-
-    std::cout << "[SA] Finished. Best value: " << bestSolution->Value << std::endl;
-}
-
-void SAAlgorithm::CopySolution(Solution*& dest, const Solution* src)
-{
-    if (dest)
-        delete dest;
-    dest = new Solution(*src);
+    logBuffer[0] = bestSolution;
+    logger.Log(logBuffer, std::to_string(++iteration));
 }
 
 void SAAlgorithm::PrintStatus(double T, int iter, double bestVal)

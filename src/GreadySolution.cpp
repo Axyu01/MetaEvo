@@ -14,7 +14,7 @@ GreadySolution::GreadySolution(CVRProblem& problem,int firstCity) : Solution(pro
         int best = 1;
         for (int i = 2; i < matrixSize; i++)
         {
-            if(matrix[0][i]< best)
+            if(matrix[0][i]< matrix[0][best])
             {
                 best = i;
             }
@@ -50,7 +50,7 @@ GreadySolution::GreadySolution(CVRProblem& problem,int firstCity) : Solution(pro
                 continue;
 
             double comparedDistance;
-            if(isCurrentReturning)
+            if(isCurrentReturning && false)//fast solution for making greedy not look for going back to depot
             {
                  comparedDistance = matrix[currentCity][0];
                  comparedDistance += matrix[0][comparedCity];
@@ -81,8 +81,8 @@ GreadySolution::GreadySolution(CVRProblem& problem,int firstCity) : Solution(pro
 
         if(isBestReturning)
             currentCapacity = 0;
-        else
-            currentCapacity+=LocationArray[currentCity].demand;
+
+        currentCapacity+=LocationArray[currentCity].demand;
     }
 
     //Cleanup

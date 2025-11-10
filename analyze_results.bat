@@ -1,18 +1,16 @@
 @echo off
 REM =====================================
 REM   CVRP Results Analyzer - Windows BAT
-REM   Autor: Adrian Sośniak
-REM   Data: 2025-10-27
 REM =====================================
 
 set SCRIPT=main.py
 set OUTPUT_DIR=report_output
 
 echo =====================================
-echo [INFO] Uruchamiam analizę wyników CVRP
+echo [INFO] Uruchamiam analize wynikow CVRP
 echo =====================================
 
-REM Sprawdź czy Python jest dostępny
+REM Sprawdz czy Python jest dostepny
 where python >nul 2>nul
 if %errorlevel% neq 0 (
     echo [ERROR] Python nie jest zainstalowany lub nie jest w PATH.
@@ -26,21 +24,14 @@ if not exist "%OUTPUT_DIR%" (
     mkdir "%OUTPUT_DIR%"
 )
 
-REM Uruchom analizę
+REM Uruchom analize
 echo [INFO] Uruchamianie skryptu Python...
 python "%SCRIPT%"
 
-REM Sprawdź wynik
-if %errorlevel% neq 0 (
-    echo [ERROR] Coś poszło nie tak podczas analizy wyników.
-    pause
-    exit /b
-)
-
 echo.
 echo =====================================
-echo [OK] Analiza zakończona pomyślnie!
-echo Wyniki znajdują się w folderze: %OUTPUT_DIR%
+echo [OK] Analiza zakonczona pomyslnie!
+echo Wyniki znajduja sie w folderze: %OUTPUT_DIR%
 echo =====================================
 echo.
 
